@@ -7,7 +7,8 @@ import java.io.Serializable;
 
 @Data
 @Embeddable
-public class PostTagId implements Serializable {
+public class RequestId implements Serializable {
+    private String applierEmail;
     private int postId;
-    private String tag;
+
 }

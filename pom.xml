@@ -14,7 +14,7 @@
 	<artifactId>my-study-peer</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>my-study-peer</name>
-	<description>Demo project for Spring Boot</description>
+	<description>My study peer backend</description>
 	<properties>
 		<java.version>16</java.version>
 	</properties>
@@ -52,18 +52,12 @@
 
 	<build>
 		<plugins>
+
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>16</source>
-					<target>16</target>
-				</configuration>
-			</plugin>
+
 		</plugins>
 	</build>
 
