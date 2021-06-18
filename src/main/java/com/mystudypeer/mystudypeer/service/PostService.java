@@ -15,9 +15,12 @@ public class PostService {
     @Autowired
     private PostRepository postRepository;
 
-    public List<Post> getAllPosts() {
+    public List<Post> getAllPosts(int page) {
         // 10 Per page
-        return postRepository.findAll(Sort.by(Sort.Direction.DESC, "creationDate")).subList(0, 4);
+
+        return postRepository.findAll(Sort.by(Sort.Direction.DESC, "creationDate")).subList((10 * (page - 1)), 3+(10*(page-1)));
+
+
     }
 
     public Optional<Post> getPost(int id) {

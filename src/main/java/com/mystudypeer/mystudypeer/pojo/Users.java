@@ -1,5 +1,6 @@
 package com.mystudypeer.mystudypeer.pojo;
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -39,6 +40,9 @@ public class Users {
 
     @Column(name = "telno")
     private String telno;
+
+    @Column(name = "class")
+    private int userClass;
 
     @Column(name = "programId")
     private int programId;

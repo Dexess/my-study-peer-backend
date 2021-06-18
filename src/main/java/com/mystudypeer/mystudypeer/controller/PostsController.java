@@ -18,7 +18,8 @@ public class PostsController {
     @GetMapping("/api/posts")
     @ResponseBody
     public List<Post> getPosts(@RequestParam(required = false) int page) {
-       return postService.getAllPosts();
+
+        return postService.getAllPosts(page);
     }
 
     @GetMapping(value = "/api/post")
