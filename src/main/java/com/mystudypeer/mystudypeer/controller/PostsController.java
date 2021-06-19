@@ -1,5 +1,6 @@
 package com.mystudypeer.mystudypeer.controller;
 
+import com.mystudypeer.mystudypeer.customs.PostCustom;
 import com.mystudypeer.mystudypeer.service.PostService;
 import com.mystudypeer.mystudypeer.pojo.Post;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class PostsController {
     }
 
     @GetMapping(value = "/post")
-    public Optional<Post> getPost(@RequestParam int id) throws EntityNotFoundException {
+    public PostCustom getPost(@RequestParam int id) throws EntityNotFoundException {
         return postService.getPost(id);
     }
 }

@@ -42,6 +42,7 @@ public class Post implements Serializable {
     @Column(name = "authorClass")
     private int authorClass;
 
-    @Column(name = "universityId")
-    private int universityId;
+    @ManyToOne
+    @JoinColumn(name = "universityId")
+    private UniversityProgram universityProgram;
 }

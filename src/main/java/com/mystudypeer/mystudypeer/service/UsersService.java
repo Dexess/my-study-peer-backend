@@ -1,13 +1,13 @@
 package com.mystudypeer.mystudypeer.service;
 
+import com.mystudypeer.mystudypeer.customs.ProfileCustom;
+import com.mystudypeer.mystudypeer.domains.ProfileUser;
 import com.mystudypeer.mystudypeer.domains.UserSubscribedPosts;
 import com.mystudypeer.mystudypeer.domains.Registration;
 import com.mystudypeer.mystudypeer.exceptions.EntityNotFoundException;
 import com.mystudypeer.mystudypeer.exceptions.UserNotFoundException;
-import com.mystudypeer.mystudypeer.pojo.Post;
-import com.mystudypeer.mystudypeer.pojo.Request;
-import com.mystudypeer.mystudypeer.pojo.RequestStatus;
-import com.mystudypeer.mystudypeer.pojo.Users;
+import com.mystudypeer.mystudypeer.pojo.*;
+import com.mystudypeer.mystudypeer.repository.FeedbackRepository;
 import com.mystudypeer.mystudypeer.repository.PostRepository;
 import com.mystudypeer.mystudypeer.repository.RequestRepository;
 import com.mystudypeer.mystudypeer.repository.UsersRepository;
@@ -33,6 +33,9 @@ public class UsersService {
     @Autowired
     RequestRepository requestRepository;
 
+    @Autowired
+    FeedbackRepository feedbackRepository;
+
     public Optional<Users> getUserForLogin(String email, String password ) {
         String encodedPass = this.hashSHA512(password);
         Optional<Users> users = usersRepository.getUsersByEmailAndPassword(email,encodedPass);
@@ -49,8 +52,7 @@ public class UsersService {
         user.setEmail(registration.getEmail()); user.setPassword(this.hashSHA512(registration.getPassword()));
         user.setName(registration.getName()); user.setSurname(registration.getSurname());
         user.setCity(registration.getCity()); user.setUserClass(registration.getUserClass());
-        user.setProgramId(registration.getProgramId()); user.setTelno(registration.getTelno());
-
+        user.setTelno(registration.getTelno()); user.getUniversityProgram().setProgramId(registration.getProgramId());
         long millis=System.currentTimeMillis();
         java.sql.Date date=new java.sql.Date(millis);
         user.setRegisterDate(date); user.setToken("6");
@@ -79,6 +81,31 @@ public class UsersService {
         return doubleList;
     }
 
+    public ProfileCustom getProfile(int userId) throws UserNotFoundException {
+        Users user = usersRepository.findUsersById(userId);
+
+
+        List<Post> posts = postRepository.findByEmailOrderByCreationDateDesc(user.getEmail());
+        Float rating = feedbackRepository.averageFeedbackPoint(user.getEmail());
+        List<FeedbackRepository.Feedbacks> feedbacks = feedbackRepository.findFeedbackForProfile(user.getEmail());
+
+
+        ProfileUser userProfile = new ProfileUser();
+        userProfile.setName(user.getName()); userProfile.setSurname(user.getSurname());
+        userProfile.setRegisterDate(user.getRegisterDate()); userProfile.setUserClass(user.getUserClass());
+        userProfile.setUniversityName(user.getUniversityProgram().getUniversityName()); userProfile.setProgramName(user.getUniversityProgram().getProgramName());
+        userProfile.setCity(user.getCity());
+
+        ProfileCustom profile = new ProfileCustom();
+        profile.setProfileUser(userProfile);
+        profile.setPosts(posts);
+        profile.setFeedbacks(feedbacks);
+        profile.setRating(rating);
+
+        return profile;
+    }
+
+
     public String hashSHA512(String password){
         String encodedPass = new String("");
         try {
@@ -98,9 +125,6 @@ public class UsersService {
         return encodedPass;
     }
 
-    public Users getProfile(int userId) throws UserNotFoundException {
-        return usersRepository.findUsersById(userId);
 
-    }
 
 }

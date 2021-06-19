@@ -10,6 +10,8 @@ import java.util.List;
 public interface PostRepository extends JpaRepository<Post,Integer> {
 
     List<Post> findTop5ByEmailOrderByCreationDateDesc(String email);
+    List<Post> findByEmailOrderByCreationDateDesc(String email);
     Post findByPostId(int postId);
+
 
 }

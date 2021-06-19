@@ -1,5 +1,6 @@
 package com.mystudypeer.mystudypeer.controller;
 
+import com.mystudypeer.mystudypeer.customs.ProfileCustom;
 import com.mystudypeer.mystudypeer.domains.UserSubscribedPosts;
 import com.mystudypeer.mystudypeer.domains.Registration;
 import com.mystudypeer.mystudypeer.exceptions.UserNotFoundException;
@@ -33,7 +34,7 @@ public class UsersController {
     }
 
     @GetMapping(value = "/users/profile")
-    public Users profile(@RequestParam int userId) {
+    public ProfileCustom profile(@RequestParam int userId) {
         return usersService.getProfile(userId);
     }
 }

@@ -1,19 +1,30 @@
 package com.mystudypeer.mystudypeer.service;
 
-import com.mystudypeer.mystudypeer.exceptions.EntityNotFoundException;
+import com.mystudypeer.mystudypeer.customs.PostCustom;
+import com.mystudypeer.mystudypeer.pojo.Comment;
 import com.mystudypeer.mystudypeer.pojo.Post;
+import com.mystudypeer.mystudypeer.pojo.PostTag;
+import com.mystudypeer.mystudypeer.repository.CommentRepository;
 import com.mystudypeer.mystudypeer.repository.PostRepository;
+import com.mystudypeer.mystudypeer.repository.PostTagRepository;
+import com.mystudypeer.mystudypeer.repository.RequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PostService {
 
     @Autowired
     private PostRepository postRepository;
+    @Autowired
+    private CommentRepository commentRepository;
+    @Autowired
+    RequestRepository requestRepository;
+    @Autowired
+    PostTagRepository postTagRepository;
 
     public List<Post> getAllPosts(int page) {
         // 10 Per page
@@ -22,11 +33,18 @@ public class PostService {
 
     }
 
-    public Optional<Post> getPost(int id) {
-        Optional<Post> post = postRepository.findById(id);
-        if (post.isEmpty()) {
-            throw new EntityNotFoundException("Post '" + id + "' not found");
-        }
-        return postRepository.findById(id);
+    public PostCustom getPost(int id) {
+
+        Post post = postRepository.findByPostId(id);
+        List<Comment> comments = commentRepository.findByPostId(id);
+        List<PostTag> postTags = postTagRepository.findByPostTagId_PostId(id);
+        List<RequestRepository.Teammates> team = requestRepository.findTeammatesForPost(id, "accepted");
+        PostCustom postCustom = new PostCustom();
+        postCustom.setPost(post);
+        postCustom.setPostTags(postTags);
+        postCustom.setTeammates(team);
+        postCustom.setComments(comments);
+
+        return  postCustom;
     }
 }

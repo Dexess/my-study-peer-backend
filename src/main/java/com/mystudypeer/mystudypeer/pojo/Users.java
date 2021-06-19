@@ -3,10 +3,7 @@ package com.mystudypeer.mystudypeer.pojo;
 import lombok.Builder;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -44,6 +41,7 @@ public class Users {
     @Column(name = "class")
     private int userClass;
 
-    @Column(name = "programId")
-    private int programId;
+    @ManyToOne
+    @JoinColumn(name = "programId")
+    private UniversityProgram universityProgram;
 }
