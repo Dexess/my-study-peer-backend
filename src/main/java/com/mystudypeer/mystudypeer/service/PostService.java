@@ -17,7 +17,6 @@ public class PostService {
 
     public List<Post> getAllPosts(int page) {
         // 10 Per page
-
         return postRepository.findAll(Sort.by(Sort.Direction.DESC, "creationDate")).subList((10 * (page - 1)), 3+(10*(page-1)));
 
 

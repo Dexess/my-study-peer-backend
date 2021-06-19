@@ -15,15 +15,13 @@ public class PostsController {
     @Autowired
     private PostService postService;
 
-    @GetMapping("/api/posts")
-    @ResponseBody
+    @GetMapping("/posts")
     public List<Post> getPosts(@RequestParam(required = false) int page) {
 
         return postService.getAllPosts(page);
     }
 
-    @GetMapping(value = "/api/post")
-    @ResponseBody
+    @GetMapping(value = "/post")
     public Optional<Post> getPost(@RequestParam int id) throws EntityNotFoundException {
         return postService.getPost(id);
     }

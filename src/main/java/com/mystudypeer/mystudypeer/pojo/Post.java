@@ -8,7 +8,8 @@ import java.util.Date;
 
 @Entity
 @Data
-public class Post implements Serializable{
+@Table (name = "Post" )
+public class Post implements Serializable {
     @Id
     @GeneratedValue
     @Column(name = "postId", nullable = false)

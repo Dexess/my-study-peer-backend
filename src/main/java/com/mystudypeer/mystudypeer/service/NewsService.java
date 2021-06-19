@@ -12,6 +12,6 @@ public class NewsService {
     NewsRepository newsRepository;
 
     public List<News> getAllNews() {
-        return newsRepository.findAll(Sort.by(Sort.Direction.DESC, "creationDate")).subList(0, 2);
+        return newsRepository.findAll(Sort.by(Sort.Direction.DESC, "creationDate")).subList(0, 5);
     }
 }

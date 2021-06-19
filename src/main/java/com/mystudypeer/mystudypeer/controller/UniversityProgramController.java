@@ -15,9 +15,8 @@ public class UniversityProgramController {
     @Autowired
     UniversityProgramService universityProgramService;
 
-    @GetMapping("/api/university")
+    @GetMapping("/university")
     public List<UniversityProgram> getPosts() {
-
         return universityProgramService.getUniversity();
     }
 

@@ -1,6 +1,7 @@
 package com.mystudypeer.mystudypeer.repository;
 
 import com.mystudypeer.mystudypeer.pojo.Users;
+import org.apache.catalina.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,5 +16,7 @@ public interface UsersRepository extends JpaRepository<Users, Integer> {
     public Optional<Users> getUserForLogin(@Param("email") String email, @Param("password") String password );*/
 
     public Optional<Users> getUsersByEmailAndPassword(String email, String password);
+    Users getUsersByIdAndToken(int userId, String token);
     public Optional<Users> getUsersByEmailEquals(String email);
+    Users findUsersById(int userId);
 }

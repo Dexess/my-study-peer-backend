@@ -14,8 +14,7 @@ public class NewsController {
     @Autowired
     private NewsService newsService;
 
-    @GetMapping("/api/news")
-    @ResponseBody
+    @GetMapping("/news")
     public List<News> getAllPosts() {
         return newsService.getAllNews();
     }
