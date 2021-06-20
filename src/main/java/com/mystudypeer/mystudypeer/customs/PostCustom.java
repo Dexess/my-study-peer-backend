@@ -12,6 +12,7 @@ import java.util.List;
 public class PostCustom {
 
     Post post;
+    int postAuthorId;
     List<RequestRepository.Teammates> teammates;
     List<Comment> comments;
     List<PostTag> postTags;

@@ -14,17 +14,17 @@ public class Comment {
     @Id
     @GeneratedValue
     @Column(name = "commentId", nullable = false)
-    private int commandId;
+    private int commentId;
     @Column(name = "commentDate", nullable = false)
     private Date commentDate;
     @Column(name = "commentText", nullable = false)
     private String commentText;
     @Column(name = "commentorName", nullable = false)
-    private String commentorName;
+    private String commenterName;
     @Column(name = "commentorSurname", nullable = false)
-    private String commentorSurname;
+    private String commenterSurname;
     @Column(name = "commentorEmail", nullable = false)
-    private String commentorEmail;
+    private String commenterEmail;
     @Column(name = "postId", nullable = false)
     private int postId;
 }

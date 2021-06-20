@@ -1,4 +1,4 @@
-package com.mystudypeer.mystudypeer.exceptions;
+package com.mystudypeer.mystudypeer.domains;
 
 import lombok.Data;
 import org.springframework.http.HttpStatus;

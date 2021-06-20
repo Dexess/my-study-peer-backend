@@ -13,6 +13,7 @@ public interface RequestRepository extends JpaRepository<Request, RequestId> {
 
 
     List<Request> findTop5ByRequestIdApplierEmailAndStatusOrderByRequestDateDesc(String applierEmail, String status);
+    Request findByRequestId_PostIdAndRequestId_ApplierEmailAndStatus(int postId, String email, String status);
 
     @Query(nativeQuery = true, value = "SELECT u.name, u.surname, u.class as userClass, uni.universityName, uni.programName, u.userId " +
             "FROM Users as u " +

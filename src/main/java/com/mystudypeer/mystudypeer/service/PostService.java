@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,20 +30,23 @@ public class PostService {
     @Autowired
     private UsersRepository usersRepository;
 
-    public List<Post> getAllPosts(int page) {
+    public List<PostRepository.GetPosts> getAllPosts(int page) {
         // 10 Per page
-        return postRepository.findAll(Sort.by(Sort.Direction.DESC, "creationDate")).subList((10 * (page - 1)), 3+(10*(page-1)));
+        List<PostRepository.GetPosts> posts = postRepository.findPostsForPage((page-1)*10);
 
+        return  posts;
 
     }
 
     public PostCustom getPost(int id) {
 
         Post post = postRepository.findByPostId(id);
+        Users user = usersRepository.findUsersByEmail(post.getEmail());
         List<Comment> comments = commentRepository.findByPostId(id);
         List<PostTag> postTags = postTagRepository.findByPostTagId_PostId(id);
         List<RequestRepository.Teammates> team = requestRepository.findTeammatesForPost(id, "accepted");
         PostCustom postCustom = new PostCustom();
+        postCustom.setPostAuthorId(user.getId());
         postCustom.setPost(post);
         postCustom.setPostTags(postTags);
         postCustom.setTeammates(team);

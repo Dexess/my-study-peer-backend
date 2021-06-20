@@ -19,4 +19,5 @@ public interface UsersRepository extends JpaRepository<Users, Integer> {
     Users getUsersByIdAndToken(int userId, String token);
     public Users getUsersByEmailEquals(String email);
     Users findUsersById(int userId);
+    Users findUsersByEmail(String email);
 }

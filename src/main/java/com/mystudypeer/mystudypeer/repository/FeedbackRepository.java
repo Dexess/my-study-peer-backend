@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface FeedbackRepository extends JpaRepository<Feedback, FeedbackId> {
 
-    @Query(nativeQuery = true,value = "SELECT u.name as name ,u.surname as surname,f.feedbackTitle as feedbackTitle, " +
+    @Query(nativeQuery = true,value = "SELECT u.userId as userId, u.name as name ,u.surname as surname,f.feedbackTitle as feedbackTitle, " +
             "f.feedbackText as feedbackText, f.feedbackPoints as feedbackPoints, f.feedbackDate as feedbackDate, f.forPost as forPost "+
             "FROM Users AS u, Feedback AS f " +
             "WHERE u.email = f.givenBy AND f.givenTo = ?1 ")
@@ -23,6 +23,7 @@ public interface FeedbackRepository extends JpaRepository<Feedback, FeedbackId> 
 
 
     public static interface Feedbacks{
+        int getUserId();
         String getName();
         String getSurname();
         String getFeedbackTitle();

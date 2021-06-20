@@ -2,6 +2,7 @@ package com.mystudypeer.mystudypeer.controller;
 
 import com.mystudypeer.mystudypeer.customs.PostCustom;
 import com.mystudypeer.mystudypeer.domains.CreatePost;
+import com.mystudypeer.mystudypeer.repository.PostRepository;
 import com.mystudypeer.mystudypeer.service.PostService;
 import com.mystudypeer.mystudypeer.pojo.Post;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class PostsController {
     private PostService postService;
 
     @GetMapping("/posts")
-    public List<Post> getPosts(@RequestParam(required = false) int page) {
+    public List<PostRepository.GetPosts> getPosts(@RequestParam(required = false) int page) {
 
         return postService.getAllPosts(page);
     }

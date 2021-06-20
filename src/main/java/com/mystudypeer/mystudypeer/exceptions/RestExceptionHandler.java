@@ -1,5 +1,6 @@
 package com.mystudypeer.mystudypeer.exceptions;
 
+import com.mystudypeer.mystudypeer.domains.ApiError;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
