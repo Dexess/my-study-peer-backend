@@ -1,7 +1,7 @@
 package com.mystudypeer.mystudypeer.controller;
 
 import com.mystudypeer.mystudypeer.customs.ProfileCustom;
-import com.mystudypeer.mystudypeer.domains.UserSubscribedPosts;
+import com.mystudypeer.mystudypeer.customs.UserHomepagePost;
 import com.mystudypeer.mystudypeer.domains.Registration;
 import com.mystudypeer.mystudypeer.exceptions.UserNotFoundException;
 import com.mystudypeer.mystudypeer.pojo.Users;
@@ -24,17 +24,17 @@ public class UsersController {
     }
 
     @PostMapping(value = "/users/register")
-    public Optional<Users> register(@RequestBody Registration registration){
+    public Users register(@RequestBody Registration registration){
         return usersService.registerUser(registration);
     }
 
-    @GetMapping(value = "/users/posts")
-    public UserSubscribedPosts userHomepagePosts(@RequestBody Users user){
+    @PostMapping(value = "/users/posts")
+    public UserHomepagePost userHomepagePosts(@RequestBody Users user){
         return usersService.userHomepagePosts(user);
     }
 
     @GetMapping(value = "/users/profile")
-    public ProfileCustom profile(@RequestParam int userId) {
-        return usersService.getProfile(userId);
+    public ProfileCustom profile(@RequestParam int id) {
+        return usersService.getProfile(id);
     }
 }

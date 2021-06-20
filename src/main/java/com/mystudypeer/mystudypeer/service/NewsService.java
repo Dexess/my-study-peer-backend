@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import com.mystudypeer.mystudypeer.pojo.News;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -11,7 +13,9 @@ public class NewsService {
     @Autowired
     NewsRepository newsRepository;
 
-    public List<News> getAllNews() {
-        return newsRepository.findAll(Sort.by(Sort.Direction.DESC, "creationDate")).subList(0, 5);
+    public List<NewsRepository.MyNews> getAllNews() {
+        return newsRepository.homePageNews();
+        /*List<News> myNews = new ArrayList<News>();
+        return myNews;*/
     }
 }

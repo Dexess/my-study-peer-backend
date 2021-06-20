@@ -1,6 +1,7 @@
 package com.mystudypeer.mystudypeer.controller;
 import com.mystudypeer.mystudypeer.pojo.News;
 import com.mystudypeer.mystudypeer.pojo.Post;
+import com.mystudypeer.mystudypeer.repository.NewsRepository;
 import com.mystudypeer.mystudypeer.service.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ public class NewsController {
     private NewsService newsService;
 
     @GetMapping("/news")
-    public List<News> getAllPosts() {
+    public List<NewsRepository.MyNews> getAllNews() {
         return newsService.getAllNews();
     }
 }

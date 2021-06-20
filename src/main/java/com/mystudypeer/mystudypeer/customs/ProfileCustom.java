@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 public class ProfileCustom {
 
-    private ProfileUser profileUser;
+    private ProfileUser user;
     private Float rating;
     private List<Post> posts;
     private List<FeedbackRepository.Feedbacks> feedbacks;

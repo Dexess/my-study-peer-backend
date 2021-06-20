@@ -8,7 +8,6 @@ import java.util.Date;
 @Data
 public class ProfileUser {
 
-
     private String name;
     private String surname;
     private Date registerDate;

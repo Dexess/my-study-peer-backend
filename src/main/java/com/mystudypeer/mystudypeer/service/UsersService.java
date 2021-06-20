@@ -2,7 +2,7 @@ package com.mystudypeer.mystudypeer.service;
 
 import com.mystudypeer.mystudypeer.customs.ProfileCustom;
 import com.mystudypeer.mystudypeer.domains.ProfileUser;
-import com.mystudypeer.mystudypeer.domains.UserSubscribedPosts;
+import com.mystudypeer.mystudypeer.customs.UserHomepagePost;
 import com.mystudypeer.mystudypeer.domains.Registration;
 import com.mystudypeer.mystudypeer.exceptions.EntityNotFoundException;
 import com.mystudypeer.mystudypeer.exceptions.UserNotFoundException;
@@ -46,7 +46,7 @@ public class UsersService {
         return users;
     }
 
-    public Optional<Users> registerUser(Registration registration){
+    public Users registerUser(Registration registration){
 
         Users user = new Users();
         user.setEmail(registration.getEmail()); user.setPassword(this.hashSHA512(registration.getPassword()));
@@ -56,39 +56,39 @@ public class UsersService {
         long millis=System.currentTimeMillis();
         java.sql.Date date=new java.sql.Date(millis);
         user.setRegisterDate(date); user.setToken("6");
-        usersRepository.save(user);
-        Optional<Users> users = usersRepository.getUsersByEmailEquals(user.getEmail());
-        return users;
+        user = usersRepository.save(user);
+        return user;
     }
 
-    public UserSubscribedPosts userHomepagePosts(Users user){
-        Users users = usersRepository.getUsersByIdAndToken(user.getId(),user.getToken());
+    public UserHomepagePost userHomepagePosts(Users user){
 
-        user.setEmail(users.getEmail());
-        List <Post>  posts = postRepository.findTop5ByEmailOrderByCreationDateDesc(user.getEmail());
+        Users foundUser = usersRepository.getUsersByIdAndToken(user.getId(),user.getToken());
+        List <Post>  ownedPosts = postRepository.findTop5ByEmailOrderByCreationDateDesc(foundUser.getEmail());
+        List <Request> request  = requestRepository.findTop5ByRequestIdApplierEmailAndStatusOrderByRequestDateDesc(foundUser.getEmail(),"accepted");
 
-        List <Request> request  = requestRepository.findTop5ByRequestIdApplierEmailAndStatus(user.getEmail(),RequestStatus.accepted);
-        List<Post> secondPosts = new ArrayList<Post>();
+        List<Post> memberPosts = new ArrayList<Post>();
         for(int i  = 0; i < request.size(); i++){
             Post post = postRepository.findByPostId(request.get(i).getRequestId().getPostId());
-            secondPosts.add(post);
+            memberPosts.add(post);
         }
-        Post myPost = new Post();
 
-        UserSubscribedPosts doubleList = new UserSubscribedPosts();
-        doubleList.setOwnedPost(posts);
-        doubleList.setMemberPost(secondPosts);
-        return doubleList;
+        UserHomepagePost userHomepagePost = new UserHomepagePost();
+        userHomepagePost.setName(foundUser.getName());
+        userHomepagePost.setSurname(foundUser.getSurname());
+        userHomepagePost.setOwnedPost(ownedPosts);
+        userHomepagePost.setMemberPost(memberPosts);
+        return userHomepagePost;
     }
 
-    public ProfileCustom getProfile(int userId) throws UserNotFoundException {
+    public ProfileCustom getProfile(int userId){
+
         Users user = usersRepository.findUsersById(userId);
-
-
+        if(user == null){
+            throw new EntityNotFoundException("User doesn't exist");
+        }
         List<Post> posts = postRepository.findByEmailOrderByCreationDateDesc(user.getEmail());
         Float rating = feedbackRepository.averageFeedbackPoint(user.getEmail());
         List<FeedbackRepository.Feedbacks> feedbacks = feedbackRepository.findFeedbackForProfile(user.getEmail());
-
 
         ProfileUser userProfile = new ProfileUser();
         userProfile.setName(user.getName()); userProfile.setSurname(user.getSurname());
@@ -97,7 +97,7 @@ public class UsersService {
         userProfile.setCity(user.getCity());
 
         ProfileCustom profile = new ProfileCustom();
-        profile.setProfileUser(userProfile);
+        profile.setUser(userProfile);
         profile.setPosts(posts);
         profile.setFeedbacks(feedbacks);
         profile.setRating(rating);

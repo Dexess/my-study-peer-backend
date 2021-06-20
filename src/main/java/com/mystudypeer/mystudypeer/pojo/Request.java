@@ -14,7 +14,7 @@ public class Request {
     @EmbeddedId
     private RequestId requestId;
     @Column(name = "status")
-    private RequestStatus status;
+    private String status;
     @Column(name = "requestDate")
     private Date requestDate;
 
