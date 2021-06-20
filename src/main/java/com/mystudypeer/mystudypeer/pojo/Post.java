@@ -30,8 +30,8 @@ public class Post implements Serializable {
     @Column(name = "postEnabled")
     private Boolean postEnabled;
 
-    @Column(name = "email")
-    private String email;
+    @Column(name = "userId")
+    private int userId;
 
     @Column(name = "authorName")
     private String authorName;

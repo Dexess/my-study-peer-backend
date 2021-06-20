@@ -63,8 +63,8 @@ public class UsersService {
     public UserHomepagePost userHomepagePosts(Users user){
 
         Users foundUser = usersRepository.getUsersByIdAndToken(user.getId(),user.getToken());
-        List <Post>  ownedPosts = postRepository.findTop5ByEmailOrderByCreationDateDesc(foundUser.getEmail());
-        List <Request> request  = requestRepository.findTop5ByRequestIdApplierEmailAndStatusOrderByRequestDateDesc(foundUser.getEmail(),"accepted");
+        List <Post>  ownedPosts = postRepository.findTop5ByUserIdOrderByCreationDateDesc(foundUser.getId());
+        List <Request> request  = requestRepository.findTop5ByRequestIdApplierUserIdAndStatusOrderByRequestDateDesc(foundUser.getId(),"accepted");
 
         List<Post> memberPosts = new ArrayList<Post>();
         for(int i  = 0; i < request.size(); i++){
@@ -86,9 +86,9 @@ public class UsersService {
         if(user == null){
             throw new EntityNotFoundException("User doesn't exist");
         }
-        List<Post> posts = postRepository.findByEmailOrderByCreationDateDesc(user.getEmail());
-        Float rating = feedbackRepository.averageFeedbackPoint(user.getEmail());
-        List<FeedbackRepository.Feedbacks> feedbacks = feedbackRepository.findFeedbackForProfile(user.getEmail());
+        List<Post> posts = postRepository.findByUserIdOrderByCreationDateDesc(user.getId());
+        Float rating = feedbackRepository.averageFeedbackPoint(user.getId());
+        List<FeedbackRepository.Feedbacks> feedbacks = feedbackRepository.findFeedbackForProfile(user.getId());
 
         ProfileUser userProfile = new ProfileUser();
         userProfile.setName(user.getName()); userProfile.setSurname(user.getSurname());

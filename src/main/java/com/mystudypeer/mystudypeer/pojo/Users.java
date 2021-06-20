@@ -10,10 +10,10 @@ import java.sql.Date;
 @Data
 @Table(name = "Users")
 public class Users {
+    @Id
     @Column(name = "userId")
     private int id;
 
-    @Id
     @Column(name = "email")
     private String email;
 

@@ -12,8 +12,8 @@ import java.util.List;
 @Repository
 public interface PostRepository extends JpaRepository<Post,Integer> {
 
-    List<Post> findTop5ByEmailOrderByCreationDateDesc(String email);
-    List<Post> findByEmailOrderByCreationDateDesc(String email);
+    List<Post> findTop5ByUserIdOrderByCreationDateDesc(int userId);
+    List<Post> findByUserIdOrderByCreationDateDesc(int userId);
     Post findByPostId(int postId);
 
     @Query(nativeQuery = true,value="SELECT p.postId, p.title, p.course, p.creationDate, p.description, p.authorName, p.authorSurname FROM Post AS p WHERE p.postEnabled = 1 ORDER BY p.creationDate DESC LIMIT ?1,10 ")

@@ -19,12 +19,12 @@ public class Comment {
     private Date commentDate;
     @Column(name = "commentText", nullable = false)
     private String commentText;
-    @Column(name = "commentorName", nullable = false)
+    @Column(name = "commenterName", nullable = false)
     private String commenterName;
-    @Column(name = "commentorSurname", nullable = false)
+    @Column(name = "commenterSurname", nullable = false)
     private String commenterSurname;
-    @Column(name = "commentorEmail", nullable = false)
-    private String commenterEmail;
+    @Column(name = "commenterUserId", nullable = false)
+    private int commenterUserId;
     @Column(name = "postId", nullable = false)
     private int postId;
 }

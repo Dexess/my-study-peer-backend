@@ -3,6 +3,7 @@ package com.mystudypeer.mystudypeer.service;
 import com.mystudypeer.mystudypeer.customs.PostCustom;
 import com.mystudypeer.mystudypeer.domains.CreatePost;
 import com.mystudypeer.mystudypeer.domains.PostTagId;
+import com.mystudypeer.mystudypeer.domains.UpdatePost;
 import com.mystudypeer.mystudypeer.exceptions.EntityNotFoundException;
 import com.mystudypeer.mystudypeer.pojo.Comment;
 import com.mystudypeer.mystudypeer.pojo.Post;
@@ -41,16 +42,16 @@ public class PostService {
     public PostCustom getPost(int id) {
 
         Post post = postRepository.findByPostId(id);
-        Users user = usersRepository.findUsersByEmail(post.getEmail());
-        List<Comment> comments = commentRepository.findByPostId(id);
+        if(post == null){
+            throw new EntityNotFoundException("Post doesn't exist");
+        }
+
         List<PostTag> postTags = postTagRepository.findByPostTagId_PostId(id);
         List<RequestRepository.Teammates> team = requestRepository.findTeammatesForPost(id, "accepted");
         PostCustom postCustom = new PostCustom();
-        postCustom.setPostAuthorId(user.getId());
         postCustom.setPost(post);
         postCustom.setPostTags(postTags);
         postCustom.setTeammates(team);
-        postCustom.setComments(comments);
 
         return  postCustom;
     }
@@ -66,7 +67,7 @@ public class PostService {
         post.setDescription(createPost.getDescription());
         post.setCourse(createPost.getCourse());
         post.setPostEnabled(Boolean.TRUE);
-        post.setEmail(user.getEmail());
+        post.setUserId(user.getId());
         post.setAuthorName(user.getName());
         post.setAuthorSurname(user.getSurname());
         post.setAuthorClass(user.getUserClass());
@@ -87,8 +88,25 @@ public class PostService {
                 postTagId.setTag(createPost.getPostTags().get(i));
                 postTag.setPostTagId(postTagId);
                 postTag = postTagRepository.save(postTag);
+
             }
         }
         return post.getPostId();
+    }
+
+    public Post updatePost(UpdatePost updatePost){
+        Post post = postRepository.findByPostId(updatePost.getPostId());
+
+        if(post == null || post.getUserId() != updatePost.getUserId()){
+            throw new EntityNotFoundException("You are not the owner of this Post!");
+        }
+
+        post.setPostEnabled(updatePost.getPostEnabled());
+        post.setTitle(updatePost.getTitle());
+        post.setCourse(updatePost.getCourse());
+        post.setDescription(updatePost.getDescription());
+
+        post = postRepository.save(post);
+        return  post;
     }
 }

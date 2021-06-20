@@ -10,6 +10,6 @@ import java.io.Serializable;
 @Embeddable
 public class FeedbackId implements Serializable {
     private int forPost;
-    private String givenTo;
-    private String givenBy;
+    private int givenTo;
+    private int givenBy;
 }

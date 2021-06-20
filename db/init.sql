@@ -26,7 +26,7 @@ CREATE TABLE Users(
                       class TINYINT NOT NULL DEFAULT 1,
                       telno VARCHAR(16),
                       programId INT UNSIGNED,
-                      PRIMARY KEY(email),
+                      PRIMARY KEY(userId),
                       FOREIGN KEY(programId) REFERENCES UniversityProgram(programId),
                       CONSTRAINT range_class CHECK (class BETWEEN 1 AND 4),
                       CONSTRAINT unique_id UNIQUE (userId),
@@ -41,13 +41,13 @@ CREATE TABLE Post (
                       creationDate DATE NOT NULL DEFAULT (CURRENT_DATE),
                       description VARCHAR(500),
                       postEnabled BOOLEAN NOT NULL,
-                      email VARCHAR(255) NOT NULL,
+                      userId INT UNSIGNED,
                       authorName VARCHAR(32) NOT NULL,
                       authorSurname VARCHAR(32) NOT NULL,
                       authorClass TINYINT NOT NULL DEFAULT 1,
                       universityId INT UNSIGNED,
                       PRIMARY KEY (postId),
-                      FOREIGN KEY (email) REFERENCES Users(email),
+                      FOREIGN KEY (userId) REFERENCES Users(userId),
                       FOREIGN KEY (universityId) REFERENCES UniversityProgram(programId),
                       INDEX (postEnabled,creationDate),
                       INDEX (postEnabled,title,creationDate)
@@ -67,23 +67,23 @@ CREATE TABLE Comment(
                         commentDate DATE NOT NULL DEFAULT (CURRENT_DATE),
                         commentId INT UNSIGNED AUTO_INCREMENT NOT NULL,
                         commentText VARCHAR(64) NOT NULL,
-                        commentorName VARCHAR(32) NOT NULL,
-                        commentorSurname VARCHAR(32) NOT NULL,
-                        commentorEmail VARCHAR (255) NOT NULL,
+                        commenterName VARCHAR(32) NOT NULL,
+                        commenterSurname VARCHAR(32) NOT NULL,
+                        commenterUserId INT UNSIGNED,
                         postId INT UNSIGNED NOT NULL,
                         PRIMARY KEY (commentId),
-                        FOREIGN KEY (commentorEmail) REFERENCES Users(email),
+                        FOREIGN KEY (commenterUserId) REFERENCES Users(userId),
                         FOREIGN KEY (postId) REFERENCES Post(postId)
 );
 
 CREATE TABLE Request(
-                        applierEmail VARCHAR (255) NOT NULL,
+                        applierUserId INT UNSIGNED,
                         postId INT UNSIGNED NOT NULL,
                         status ENUM('rejected', 'ongoing', 'accepted') NOT NULL,
                         requestDate DATE NOT NULL DEFAULT (CURRENT_DATE),
-                        PRIMARY KEY (applierEmail, postId),
+                        PRIMARY KEY (applierUserId, postId),
                         FOREIGN KEY (postId) references Post(postId),
-                        FOREIGN KEY (applierEmail) references Users(email)
+                        FOREIGN KEY (applierUserId) references Users(userId)
 );
 
 CREATE TABLE Feedback(
@@ -91,12 +91,12 @@ CREATE TABLE Feedback(
                          feedbackText varchar(120) NOT NULL,
                          feedbackPoints int NOT NULL,
                          feedbackDate DATE NOT NULL DEFAULT (CURRENT_DATE),
-                         givenTo VARCHAR(255) NOT NULL,
-                         givenBy VARCHAR(255) NOT NULL,
+                         givenTo INT UNSIGNED,
+                         givenBy INT UNSIGNED,
                          forPost INT UNSIGNED NOT NULL,
-                         PRIMARY KEY (givenTo, givenBy),
-                         FOREIGN KEY (givenBy) REFERENCES Users(email),
-                         FOREIGN KEY (givenTo) REFERENCES Users(email),
+                         PRIMARY KEY (givenTo, givenBy, forPost),
+                         FOREIGN KEY (givenBy) REFERENCES Users(userId),
+                         FOREIGN KEY (givenTo) REFERENCES Users(userId),
                          FOREIGN KEY (forPost) REFERENCES Post(postId)
 );
 
@@ -123,25 +123,25 @@ INSERT INTO Users (email, token, name, registerDate, password, surname, city, cl
 
 -- Creating Posts
 INSERT INTO
-    Post (title, course, description, postEnabled, email, authorName, authorSurname, authorClass, universityId)
+    Post (title, course, description, postEnabled, userId, authorName, authorSurname, authorClass, universityId)
 SELECT
-    'Calisma arkadası arıyorum', 'CNG350', '',  1,  email, name, surname, class, programId
+    'Calisma arkadası arıyorum', 'CNG350', '',  1,  userId, name, surname, class, programId
 FROM
     Users
 WHERE email = 'necdet.efe@metu.edu.tr';
 
 INSERT INTO
-    Post (title, course, description, postEnabled, email, authorName, authorSurname, authorClass, universityId)
+    Post (title, course, description, postEnabled, userId, authorName, authorSurname, authorClass, universityId)
 SELECT
-    'Bu 2. post', 'CNG355', '',  1,  email, name, surname, class, programId
+    'Bu 2. post', 'CNG355', '',  1,  userId, name, surname, class, programId
 FROM
     Users
 WHERE email = 'necdet.efe@metu.edu.tr';
 
 INSERT INTO
-    Post (title, course, creationDate, description, postEnabled, email, authorName, authorSurname, authorClass, universityId)
+    Post (title, course, creationDate, description, postEnabled, userId, authorName, authorSurname, authorClass, universityId)
 SELECT
-    'CNG 350 Working Group 2', 'CNG350','2021-02-20','Looking for group mates', 1, email, name, surname, class, programId
+    'CNG 350 Working Group 2', 'CNG350','2021-02-20','Looking for group mates', 1, userId, name, surname, class, programId
 FROM
     Users
 WHERE
@@ -149,39 +149,39 @@ WHERE
 
 -- Inserting Feedbacks
 
-INSERT INTO Feedback (feedbackTitle, feedbackText, feedbackPoints, givenTo,givenBy, forPost) VALUES ('CNG350','good', 5, 'necdet.efe@metu.edu.tr', 'aygun.mustafa@metu.edu.tr', 1);
+INSERT INTO Feedback (feedbackTitle, feedbackText, feedbackPoints, givenTo,givenBy, forPost) VALUES ('CNG350','good', 5, 1, 2, 1);
 
-INSERT INTO Feedback (feedbackTitle, feedbackText, feedbackPoints, givenTo,givenBy, forPost) VALUES ('CNG350','good',4,'necdet.efe@metu.edu.tr','john.doe@metu.edu.tr', 1);
+INSERT INTO Feedback (feedbackTitle, feedbackText, feedbackPoints, givenTo,givenBy, forPost) VALUES ('CNG350','good',4,1,3, 1);
 
 -- Inserting requets
-INSERT INTO Request (applierEmail,postId,status) VALUES ('aygun.mustafa@metu.edu.tr', 1, 'ongoing');
-INSERT INTO Request (applierEmail,postId,status) VALUES ('john.doe@metu.edu.tr', 1, 'accepted');
-INSERT INTO Request (applierEmail,postId,status) VALUES ('john.doe@metu.edu.tr', 2, 'ongoing');
-INSERT INTO Request (applierEmail,postId,status) VALUES ('keanu.reeves@metu.edu.tr', 1, 'accepted');
-INSERT INTO Request (applierEmail,postId,status) VALUES ('keanu.reeves@metu.edu.tr', 3, 'ongoing');
+INSERT INTO Request (applierUserId,postId,status) VALUES (2, 1, 'ongoing');
+INSERT INTO Request (applierUserId,postId,status) VALUES (3, 1, 'accepted');
+INSERT INTO Request (applierUserId,postId,status) VALUES (4, 2, 'ongoing');
+INSERT INTO Request (applierUserId,postId,status) VALUES (4, 1, 'accepted');
+INSERT INTO Request (applierUserId,postId,status) VALUES (4, 3, 'ongoing');
 
 -- Inserting comments
 INSERT INTO
-    Comment (commentText, commentorName, commentorSurname, commentorEmail, postId)
+    Comment (commentText, commenterName, commenterSurname, commenterUserId, postId)
 SELECT
-    'We are 2 now.', name, surname, email, 1
+    'We are 2 now.', name, surname, userId, 1
 FROM
     Users
 WHERE email = 'john.doe@metu.edu.tr';
 
 INSERT INTO
-    Comment (commentText, commentorName, commentorSurname, commentorEmail, postId)
+    Comment (commentText, commenterName, commenterSurname, commenterUserId, postId)
 SELECT
-    'We are looking for 3.', name, surname, email, 1
+    'We are looking for 3.', name, surname, userId, 1
 FROM
     Users
 WHERE
         email = 'necdet.efe@metu.edu.tr';
 
 INSERT INTO
-    Comment (commentText, commentorName, commentorSurname, commentorEmail, postId)
+    Comment (commentText, commenterName, commenterSurname, commenterUserId, postId)
 SELECT
-    'We are 3 now.', name, surname,email, 1
+    'We are 3 now.', name, surname, userId, 1
 FROM
     Users
 WHERE

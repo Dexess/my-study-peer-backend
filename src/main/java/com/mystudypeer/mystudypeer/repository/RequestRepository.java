@@ -12,12 +12,12 @@ import java.util.List;
 public interface RequestRepository extends JpaRepository<Request, RequestId> {
 
 
-    List<Request> findTop5ByRequestIdApplierEmailAndStatusOrderByRequestDateDesc(String applierEmail, String status);
-    Request findByRequestId_PostIdAndRequestId_ApplierEmailAndStatus(int postId, String email, String status);
+    List<Request> findTop5ByRequestIdApplierUserIdAndStatusOrderByRequestDateDesc(int userId, String status);
+    Request findByRequestId_PostIdAndRequestId_ApplierUserIdAndStatus(int postId, int userId, String status);
 
     @Query(nativeQuery = true, value = "SELECT u.name, u.surname, u.class as userClass, uni.universityName, uni.programName, u.userId " +
             "FROM Users as u " +
-            "INNER JOIN Request as r on u.email = r.applierEmail " +
+            "INNER JOIN Request as r on u.userId = r.applierUserId " +
             "INNER JOIN UniversityProgram as uni on u.programId = uni.programId " +
             "WHERE r.status = ?2 and r.postId = ?1")
     List<Teammates> findTeammatesForPost(int postId, String status);

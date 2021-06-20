@@ -16,10 +16,10 @@ public interface FeedbackRepository extends JpaRepository<Feedback, FeedbackId> 
             "f.feedbackText as feedbackText, f.feedbackPoints as feedbackPoints, f.feedbackDate as feedbackDate, f.forPost as forPost "+
             "FROM Users AS u, Feedback AS f " +
             "WHERE u.email = f.givenBy AND f.givenTo = ?1 ")
-    List<Feedbacks> findFeedbackForProfile(String givenTo);
+    List<Feedbacks> findFeedbackForProfile(int givenTo);
 
-    @Query(value = "SELECT avg(f.feedbackPoints + 0.0) FROM Feedback as f INNER JOIN Users as u on u.email = f.feedbackId.givenTo WHERE f.feedbackId.givenTo = ?1")
-    Float averageFeedbackPoint(String givenTo);
+    @Query(value = "SELECT avg(f.feedbackPoints + 0.0) FROM Feedback as f INNER JOIN Users as u on u.id = f.feedbackId.givenTo WHERE f.feedbackId.givenTo = ?1")
+    Float averageFeedbackPoint(int givenTo);
 
 
     public static interface Feedbacks{
