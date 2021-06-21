@@ -15,8 +15,10 @@ public interface PostRepository extends JpaRepository<Post,Integer> {
     List<Post> findTop5ByUserIdOrderByCreationDateDesc(int userId);
     List<Post> findByUserIdOrderByCreationDateDesc(int userId);
     Post findByPostId(int postId);
+    Post findByPostIdAndPostEnabled(int postId, Boolean bool);
 
-    @Query(nativeQuery = true,value="SELECT p.postId, p.title, p.course, p.creationDate, p.description, p.authorName, p.authorSurname FROM Post AS p WHERE p.postEnabled = 1 ORDER BY p.creationDate DESC LIMIT ?1,10 ")
+    @Query(nativeQuery = true,value="SELECT p.postId, p.title, p.course, p.creationDate, p.description, p.authorName, p.authorSurname " +
+            "FROM Post AS p WHERE p.postEnabled = 1 ORDER BY p.creationDate DESC LIMIT ?1,5 ")
     List<GetPosts> findPostsForPage(int page);
     public static interface GetPosts{
         int getPostId();

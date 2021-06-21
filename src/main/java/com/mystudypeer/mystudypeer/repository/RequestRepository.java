@@ -30,4 +30,38 @@ public interface RequestRepository extends JpaRepository<Request, RequestId> {
         String getProgramName();
         int getUserId();
     }
+
+    @Query(nativeQuery = true, value = "SELECT p.postId, p.title, u.name, u.surname, u.userId, r.requestDate, r.status " +
+            "FROM Post as p " +
+            "INNER JOIN Request as r on p.postId = r.postId " +
+            "INNER JOIN Users as u on r.applierUserId = u.userId " +
+            "WHERE p.userId = ?1 " +
+            "ORDER BY r.requestDate DESC")
+    List<OwnedPostRequests> ownedPostRequests(int userId);
+
+    public static interface OwnedPostRequests{
+        int getPostId();
+        String getTitle();
+        String getName();
+        String getSurname();
+        String getUserId();
+        String getRequestDate();
+        String getStatus();
+    }
+
+    @Query(nativeQuery = true, value = "SELECT p.postId, p.title, r.status, r.requestDate " +
+            "FROM Post as p " +
+            "INNER JOIN Request as r on p.postId = r.postId " +
+            "WHERE r.applierUserId = ?1 " +
+            "ORDER BY r.requestDate DESC ")
+    List<SubsPostRequests> subsPostRequests(int userId);
+
+    public static interface SubsPostRequests{
+        int getPostId();
+        String getTitle();
+        String getStatus();
+        String getRequestDate();
+    }
+
+    Request findByRequestId_PostIdAndRequestId_ApplierUserId(int postId, int applierUserId);
 }
