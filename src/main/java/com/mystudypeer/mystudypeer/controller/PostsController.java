@@ -2,6 +2,7 @@ package com.mystudypeer.mystudypeer.controller;
 
 import com.mystudypeer.mystudypeer.customs.PostCustom;
 import com.mystudypeer.mystudypeer.domains.CreatePost;
+import com.mystudypeer.mystudypeer.domains.DeletePost;
 import com.mystudypeer.mystudypeer.domains.UpdatePost;
 import com.mystudypeer.mystudypeer.repository.PostRepository;
 import com.mystudypeer.mystudypeer.service.PostService;
@@ -35,10 +36,13 @@ public class PostsController {
         return postService.createPost(createPost);
     }
 
-    @PutMapping(value = "post")
+    @PutMapping(value = "/post/update")
     public Post updatePost(@RequestBody UpdatePost updatePost){
         return postService.updatePost(updatePost);
     }
+
+    @PostMapping(value = "/post/delete" )
+    public String deletePost(@RequestBody DeletePost deletePost) { return postService.deletePost(deletePost);}
 }
 
 

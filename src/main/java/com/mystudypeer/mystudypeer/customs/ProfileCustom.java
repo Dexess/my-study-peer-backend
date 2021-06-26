@@ -15,4 +15,5 @@ public class ProfileCustom {
     private Float rating;
     private List<Post> posts;
     private List<FeedbackRepository.Feedbacks> feedbacks;
+    private List<FeedbackRepository.GiveFeedbackOn> canGiveFeedbackOn;
 }

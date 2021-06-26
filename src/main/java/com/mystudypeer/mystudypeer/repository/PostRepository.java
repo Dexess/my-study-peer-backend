@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface PostRepository extends JpaRepository<Post,Integer> {
 
-    List<Post> findTop5ByUserIdOrderByCreationDateDesc(int userId);
+    List<Post> findAllByUserIdOrderByCreationDateDesc(int userId);
     List<Post> findByUserIdOrderByCreationDateDesc(int userId);
     Post findByPostId(int postId);
     Post findByPostIdAndPostEnabled(int postId, Boolean bool);
@@ -29,5 +29,6 @@ public interface PostRepository extends JpaRepository<Post,Integer> {
         String getAuthorName();
         String getAuthorSurname();
     }
+
 
 }

@@ -11,5 +11,5 @@ public class UpdatePost {
     private String title;
     private String description;
     private String course;
-    private Boolean postEnabled;
+    private Boolean postEnabled = Boolean.TRUE;
 }

@@ -13,6 +13,7 @@ public interface RequestRepository extends JpaRepository<Request, RequestId> {
 
 
     List<Request> findTop5ByRequestIdApplierUserIdAndStatusOrderByRequestDateDesc(int userId, String status);
+    List<Request> findAllByRequestIdApplierUserIdAndStatus(int userId, String status);
     Request findByRequestId_PostIdAndRequestId_ApplierUserIdAndStatus(int postId, int userId, String status);
 
     @Query(nativeQuery = true, value = "SELECT u.name, u.surname, u.class as userClass, uni.universityName, uni.programName, u.userId " +
@@ -21,6 +22,7 @@ public interface RequestRepository extends JpaRepository<Request, RequestId> {
             "INNER JOIN UniversityProgram as uni on u.programId = uni.programId " +
             "WHERE r.status = ?2 and r.postId = ?1")
     List<Teammates> findTeammatesForPost(int postId, String status);
+
 
     static interface Teammates{
         String getName();
@@ -35,7 +37,7 @@ public interface RequestRepository extends JpaRepository<Request, RequestId> {
             "FROM Post as p " +
             "INNER JOIN Request as r on p.postId = r.postId " +
             "INNER JOIN Users as u on r.applierUserId = u.userId " +
-            "WHERE p.userId = ?1 " +
+            "WHERE p.userId = ?1 AND r.status = 'ongoing' " +
             "ORDER BY r.requestDate DESC")
     List<OwnedPostRequests> ownedPostRequests(int userId);
 

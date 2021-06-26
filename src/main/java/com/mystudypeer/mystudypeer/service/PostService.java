@@ -2,14 +2,13 @@ package com.mystudypeer.mystudypeer.service;
 
 import com.mystudypeer.mystudypeer.customs.PostCustom;
 import com.mystudypeer.mystudypeer.domains.CreatePost;
+import com.mystudypeer.mystudypeer.domains.DeletePost;
 import com.mystudypeer.mystudypeer.domains.PostTagId;
 import com.mystudypeer.mystudypeer.domains.UpdatePost;
 import com.mystudypeer.mystudypeer.exceptions.EntityNotFoundException;
-import com.mystudypeer.mystudypeer.pojo.Comment;
-import com.mystudypeer.mystudypeer.pojo.Post;
-import com.mystudypeer.mystudypeer.pojo.PostTag;
-import com.mystudypeer.mystudypeer.pojo.Users;
+import com.mystudypeer.mystudypeer.pojo.*;
 import com.mystudypeer.mystudypeer.repository.*;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -33,7 +32,7 @@ public class PostService {
 
     public List<PostRepository.GetPosts> getAllPosts(int page) {
         // 10 Per page
-        List<PostRepository.GetPosts> posts = postRepository.findPostsForPage((page-1)*10);
+        List<PostRepository.GetPosts> posts = postRepository.findPostsForPage((page-1)*5);
 
         return  posts;
 
@@ -108,5 +107,32 @@ public class PostService {
 
         post = postRepository.save(post);
         return  post;
+    }
+
+    public String deletePost(DeletePost deletePost){
+        Post post = postRepository.findByPostId(deletePost.getPostId());
+        Users user = usersRepository.findUsersById(deletePost.getUserId());
+        List <Comment> comment = commentRepository.findByPostId(post.getPostId());
+        List <RequestRepository.Teammates> teammates = requestRepository.findTeammatesForPost(post.getPostId(), "Accepted");
+        if(user == null){
+            throw new EntityNotFoundException("User doesn't exist");
+        }
+        if(post == null){
+            throw new EntityNotFoundException("Post doesn't exists!");
+        }
+        else if( post.getUserId() != deletePost.getUserId()){
+            throw new EntityNotFoundException("You are not the owner of the this post!");
+        }
+        else if(comment.size() < 1 || teammates.size() < 1){
+            throw new EntityNotFoundException("You cannot delete a post with a comment or team member!");
+        }
+
+        List<PostTag> postTags = postTagRepository.findByPostTagId_PostId(post.getPostId());
+        for(PostTag postTag : postTags){
+            postTagRepository.delete(postTag);
+        }
+
+        postRepository.delete(post);
+        return "Post deleted!";
     }
 }
