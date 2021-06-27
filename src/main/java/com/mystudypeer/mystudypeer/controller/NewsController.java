@@ -1,4 +1,5 @@
 package com.mystudypeer.mystudypeer.controller;
+import com.mystudypeer.mystudypeer.domains.CreateNews;
 import com.mystudypeer.mystudypeer.pojo.News;
 import com.mystudypeer.mystudypeer.pojo.Post;
 import com.mystudypeer.mystudypeer.repository.NewsRepository;
@@ -18,5 +19,10 @@ public class NewsController {
     @GetMapping("/news")
     public List<NewsRepository.MyNews> getAllNews() {
         return newsService.getAllNews();
+    }
+
+    @PostMapping("/news")
+    public void addNews(@RequestBody CreateNews createNews){
+        newsService.addNews(createNews);
     }
 }

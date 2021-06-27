@@ -27,7 +27,7 @@ public class PostsController {
     }
 
     @GetMapping(value = "/post")
-    public PostCustom getPost(@RequestParam int id) throws EntityNotFoundException {
+    public PostCustom getPost(@RequestParam int id) {
         return postService.getPost(id);
     }
 

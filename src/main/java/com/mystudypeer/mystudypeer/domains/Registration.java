@@ -13,5 +13,6 @@ public class Registration {
     private String city;
     private String telno;
     private int userClass;
-    private int programId;
+    private String uniName;
+    private String progName;
 }

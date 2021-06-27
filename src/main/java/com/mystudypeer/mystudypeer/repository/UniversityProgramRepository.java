@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UniversityProgramRepository extends JpaRepository<UniversityProgram, Integer> {
 
+    UniversityProgram findByUniversityNameAndProgramName(String uniName, String programName);
 }

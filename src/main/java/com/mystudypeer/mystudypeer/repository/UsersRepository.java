@@ -12,12 +12,10 @@ import java.util.Optional;
 @Repository
 public interface UsersRepository extends JpaRepository<Users, Integer> {
 
-    /*@Query("SELECT u FROM Users AS u WHERE u.email = :email AND u.password = :password")
-    public Optional<Users> getUserForLogin(@Param("email") String email, @Param("password") String password );*/
+
 
     public Optional<Users> getUsersByEmailAndPassword(String email, String password);
     Users getUsersByIdAndToken(int userId, String token);
-    public Users getUsersByEmailEquals(String email);
     Users findUsersById(int userId);
     Users findUsersByEmail(String email);
 }

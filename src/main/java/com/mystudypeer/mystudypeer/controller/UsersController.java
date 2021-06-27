@@ -46,4 +46,9 @@ public class UsersController {
     public List<FeedbackRepository.GiveFeedbackOn> canGiveFeedback(@RequestBody CheckCanFeedback checkCanFeedback){
         return usersService.canGiveFeedback(checkCanFeedback);
     }
+
+    @PutMapping(value = "/users/profile")
+    public String updateProfile(@RequestBody Users user){
+        return usersService.updateProfile(user);
+    }
 }

@@ -29,7 +29,7 @@ CREATE TABLE Users(
                       PRIMARY KEY(userId),
                       FOREIGN KEY(programId) REFERENCES UniversityProgram(programId),
                       CONSTRAINT range_class CHECK (class BETWEEN 1 AND 4),
-                      CONSTRAINT unique_id UNIQUE (userId),
+                      CONSTRAINT unique_email UNIQUE (email),
                       CONSTRAINT unique_telno UNIQUE (telno)
 );
 
@@ -109,6 +109,7 @@ CREATE TABLE News(
 );
 
 -- Adding University and University Programs
+INSERT INTO UniversityProgram (universityName, programName) VALUES ('Other','Other');
 INSERT INTO UniversityProgram (universityName, programName) VALUES ('METU NCC','Computer Engineering');
 INSERT INTO UniversityProgram (universityName, programName) VALUES ('METU NCC','Electrical-Electronic Engineering');
 INSERT INTO UniversityProgram (universityName, programName) VALUES ('METU NCC','Mechanics Engineering');
@@ -116,10 +117,10 @@ INSERT INTO UniversityProgram (universityName, programName) VALUES ('METU NCC','
 INSERT INTO UniversityProgram (universityName, programName) VALUES ('METU NCC','Aerospace Engineering');
 
 -- Creating Users
-INSERT INTO Users (email, token, name, registerDate, password, surname, city, class, telno, programId) VALUES ('necdet.efe@metu.edu.tr', '', 'Necdet',CURDATE(), SHA2('iloveyelizhoca', 512), 'EFE', 'Antalya', 3, '533 845 83 23', 1);
-INSERT INTO Users (email, token, name, registerDate, password, surname, city, class, telno, programId) VALUES ('aygun.mustafa@metu.edu.tr', '', 'Mustafa',CURDATE(), SHA2('pass123',512), 'Aygün', 'Ankara', 3, '538 975 45 35', 1);
-INSERT INTO Users (email, token, name, registerDate, password, surname, city, class, telno, programId) VALUES ('john.doe@metu.edu.tr', '', 'John',CURDATE(), SHA2('ilovemoney', 512), 'Doe', 'Washington', 3, '500 500 00 00', 1);
-INSERT INTO Users (email, token, name, registerDate, password, surname, city, class, telno, programId) VALUES ('keanu.reeves@metu.edu.tr', '', 'Keanu',CURDATE(), SHA2('ilovehollywood', 512), 'Reeves', 'Hollywood', 4, '500 000 00 00', 2);
+INSERT INTO Users (email, token, name, registerDate, password, surname, city, class, telno, programId) VALUES ('necdet.efe@metu.edu.tr', '', 'Necdet',CURDATE(), SHA2('iloveyelizhoca', 512), 'EFE', 'Antalya', 3, '533 845 83 23', 2);
+INSERT INTO Users (email, token, name, registerDate, password, surname, city, class, telno, programId) VALUES ('aygun.mustafa@metu.edu.tr', '', 'Mustafa',CURDATE(), SHA2('pass123',512), 'Aygün', 'Ankara', 3, '538 975 45 35', 2);
+INSERT INTO Users (email, token, name, registerDate, password, surname, city, class, telno, programId) VALUES ('john.doe@metu.edu.tr', '', 'John',CURDATE(), SHA2('ilovemoney', 512), 'Doe', 'Washington', 3, '500 500 00 00', 2);
+INSERT INTO Users (email, token, name, registerDate, password, surname, city, class, telno, programId) VALUES ('keanu.reeves@metu.edu.tr', '', 'Keanu',CURDATE(), SHA2('ilovehollywood', 512), 'Reeves', 'Hollywood', 4, '500 000 00 00', 3);
 
 -- Creating Posts
 INSERT INTO
