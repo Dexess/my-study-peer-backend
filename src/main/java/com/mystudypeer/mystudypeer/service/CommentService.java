@@ -40,7 +40,6 @@ public class CommentService {
                 throw new EntityNotFoundException("You don't have rights to comment this post");
             }
         }
-
         Comment comment = new Comment();
 
         comment.setCommentText(createComment.getCommentText());

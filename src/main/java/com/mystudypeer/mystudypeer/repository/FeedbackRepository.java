@@ -21,9 +21,6 @@ public interface FeedbackRepository extends JpaRepository<Feedback, FeedbackId> 
             "FROM Users AS u, Feedback AS f " +
             "WHERE u.userId = f.givenBy AND f.givenTo = ?1 ")
     List<Feedbacks> findFeedbackForProfile(int givenTo);
-
-    @Query(value = "SELECT avg(f.feedbackPoints + 0.0) FROM Feedback as f INNER JOIN Users as u on u.id = f.feedbackId.givenTo WHERE f.feedbackId.givenTo = ?1")
-    Float averageFeedbackPoint(int givenTo);
     public static interface Feedbacks{
         int getUserId();
         String getName();
@@ -34,6 +31,10 @@ public interface FeedbackRepository extends JpaRepository<Feedback, FeedbackId> 
         Date getFeedbackDate();
         int getForPost();
     }
+
+    @Query(value = "SELECT avg(f.feedbackPoints + 0.0) FROM Feedback as f INNER JOIN Users as u on u.id = f.feedbackId.givenTo WHERE f.feedbackId.givenTo = ?1")
+    Float averageFeedbackPoint(int givenTo);
+
 
     @Query(nativeQuery = true, value = "SELECT p.title as title, p.postId as postId " +
             "FROM Post as p " +

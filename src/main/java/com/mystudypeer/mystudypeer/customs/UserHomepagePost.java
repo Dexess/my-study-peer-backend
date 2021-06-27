@@ -17,3 +17,4 @@ public class UserHomepagePost {
     List<Post> memberPost;
     List<RequestRepository.OwnedPostRequests> postRequest;
 }
+

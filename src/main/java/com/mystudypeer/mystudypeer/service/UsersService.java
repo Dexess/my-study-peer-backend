@@ -58,14 +58,15 @@ public class UsersService {
         user.setEmail(registration.getEmail()); user.setPassword(this.hashSHA512(registration.getPassword()));
         user.setName(registration.getName()); user.setSurname(registration.getSurname());
         user.setCity(registration.getCity()); user.setUserClass(registration.getUserClass());
-        UniversityProgram universityProgram = universityProgramRepository.findByUniversityNameAndProgramName(registration.getUniName(),registration.getProgName());
+        UniversityProgram universityProgram =
+                universityProgramRepository.findByUniversityNameAndProgramName(registration.getUniName(),registration.getProgName());
         if(universityProgram == null){
             throw new EntityNotFoundException("University and program should be selected!");
         }
         user.setTelno(registration.getTelno()); user.setUniversityProgram(universityProgram);
         long millis=System.currentTimeMillis();
         java.sql.Date date=new java.sql.Date(millis);
-        user.setRegisterDate(date); user.setToken("6");
+        user.setRegisterDate(date); user.setToken("");
         user = usersRepository.save(user);
         return user;
     }

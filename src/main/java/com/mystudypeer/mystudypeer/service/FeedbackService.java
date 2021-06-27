@@ -24,7 +24,8 @@ public class FeedbackService {
             throw new EntityNotFoundException("You are not authorized to give feedback!");
         }
 
-        Feedback checkFeedback = feedbackRepository.findByFeedbackId_GivenToAndAndFeedbackId_GivenByAndFeedbackId_ForPost(createFeedback.getGivenTo(),createFeedback.getGivenBy(),createFeedback.getForPost());
+        Feedback checkFeedback =
+                feedbackRepository.findByFeedbackId_GivenToAndAndFeedbackId_GivenByAndFeedbackId_ForPost(createFeedback.getGivenTo(),createFeedback.getGivenBy(),createFeedback.getForPost());
 
         if(checkFeedback != null){
             throw new EntityNotFoundException("You have already gave feedback for this post!");
