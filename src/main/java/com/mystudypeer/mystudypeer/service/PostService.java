@@ -123,7 +123,7 @@ public class PostService {
         else if( post.getUserId() != deletePost.getUserId()){
             throw new EntityNotFoundException("You are not the owner of the this post!");
         }
-        else if(comment.size() < 1 || teammates.size() < 1){
+        else if(comment.size() > 1 || teammates.size() > 1){
             throw new EntityNotFoundException("You cannot delete a post with a comment or team member!");
         }
 
